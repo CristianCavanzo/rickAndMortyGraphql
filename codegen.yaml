@@ -1,0 +1,9 @@
+overwrite: true
+schema: 'https://rickandmortyapi.com/graphql'
+documents: 'src/service/queries.graphql'
+generates:
+  src/service/graphql.tsx:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typed-document-node'

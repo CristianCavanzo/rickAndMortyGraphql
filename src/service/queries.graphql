@@ -1,0 +1,25 @@
+query GetAllCharacters {
+	characters {
+		results {
+			name
+			id
+			image
+			origin {
+				id
+			}
+			gender
+		}
+	}
+}
+
+query GetOneCharacter($id: ID!) {
+	character(id: $id) {
+		name
+		id
+		image
+		origin {
+			id
+		}
+		gender
+	}
+}
