@@ -1,23 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { client } from 'src/service/client';
-import { GetAllCharactersDocument } from 'src/service/graphql';
+import { Characters, GetAllCharactersDocument } from 'src/service/graphql';
+import type { GetStaticProps, InferGetStaticPropsType } from 'next';
+import { CharactersComponent } from '@components/Characters';
 
-const Home = () => {
-	const [character, setCharacter] = useState(undefined);
-	const getAllCharacters = async () => {
-		try {
-			const response = await client.query({ query: GetAllCharactersDocument });
-			console.log(response);
-			setCharacter(response.data.characters);
-		} catch (error) {
-			console.log(error);
-		}
-	};
+export const getStaticProps: GetStaticProps<Characters> = async () => {
+	try {
+		const {
+			data: { characters },
+		} = await client.query<{ characters: Characters }>({
+			query: GetAllCharactersDocument,
+		});
+		return { props: characters };
+	} catch (error) {
+		return { notFound: true };
+	}
+};
 
+const Home = ({ results }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	return (
-		<button className="" onClick={getAllCharacters}>
-			Holassa
-		</button>
+		<div className="mx-auto flex w-full max-w-5xl flex-wrap justify-center gap-6">
+			{results.map((character, key) => (
+				<CharactersComponent
+					id={character.id}
+					key={key}
+					name={character.name}
+					image={character.image}
+				/>
+			))}
+		</div>
 	);
 };
 
