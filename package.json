@@ -38,6 +38,8 @@
     "dev": "next dev",
     "lint": "next lint",
     "lint:fix": "eslint --fix",
+    "build": "next build",
+    "start": "next build; next start",
     "generate": "graphql-codegen --config codegen.yaml"
   },
   "keywords": [],
