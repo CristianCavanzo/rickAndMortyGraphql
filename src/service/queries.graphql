@@ -1,25 +1,65 @@
+fragment location on Location {
+	id
+	name
+	type
+	dimension
+	created
+}
+
+fragment character on Character {
+	id
+	name
+	status
+	species
+	type
+	gender
+	image
+	created
+}
+
+fragment episode on Episode {
+	id
+	name
+	air_date
+	episode
+	created
+}
+
+fragment characterComplete on Character {
+	...character
+	episode {
+		...episode
+		characters {
+			...character
+		}
+	}
+	origin {
+		...location
+	}
+	location {
+		...location
+	}
+}
+
 query GetAllCharacters {
 	characters {
 		results {
-			name
-			id
-			image
-			origin {
-				id
-			}
-			gender
+			...characterComplete
 		}
 	}
 }
 
 query GetOneCharacter($id: ID!) {
 	character(id: $id) {
-		name
-		id
-		image
-		origin {
-			id
-		}
-		gender
+		...character
+        episode {
+            ...episode
+        }
+        origin {
+            ...location
+        }
+        location {
+            ...location
+        }
 	}
 }
