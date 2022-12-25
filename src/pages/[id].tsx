@@ -1,9 +1,9 @@
 import React from 'react';
 import { client } from 'src/service/client';
-import { Characters, GetAllCharactersHomeDocument } from 'src/service/graphql';
+import { Character, GetAllCharactersHomeDocument } from 'src/service/graphql';
 import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
 import { CharactersComponent } from '@components/Characters';
-
+import { LayoutHome } from '@components/Layout/LayoutHome';
 export const getStaticPaths: GetStaticPaths = async () => {
 	try {
 		const { data } = await client.query({
@@ -24,33 +24,39 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	}
 };
 
-export const getStaticProps: GetStaticProps<Characters> = async ({ params }) => {
+export const getStaticProps: GetStaticProps<{
+	characters: Character[];
+	pages: number;
+	count: number;
+}> = async ({ params }) => {
 	try {
 		const {
-			data: { characters },
-		} = await client.query<{ characters: Characters }>({
+			data: { characters: charactersQuery },
+		} = await client.query({
 			query: GetAllCharactersHomeDocument,
 			variables: {
 				id: Number(params.id),
 			},
 		});
-		return { props: characters };
+		const characters = charactersQuery.results as Character[];
+		const pages = charactersQuery.info.pages;
+		const count = charactersQuery.info.count;
+		return {
+			props: {
+				characters,
+				pages: pages,
+				count: count,
+			},
+		};
 	} catch (error) {
 		return { notFound: true };
 	}
 };
 
-const Home = ({ results }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Home = ({ characters, count }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	return (
-		<div className="mx-auto flex w-full max-w-5xl flex-wrap justify-center gap-6">
-			{results.map((character, key) => (
-				<CharactersComponent
-					id={character.id}
-					key={key}
-					name={character.name}
-					image={character.image}
-				/>
-			))}
+		<div>
+			<LayoutHome characters={characters} totalCharacters={count} />
 		</div>
 	);
 };

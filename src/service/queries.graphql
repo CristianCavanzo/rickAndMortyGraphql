@@ -53,6 +53,7 @@ query GetAllCharactersHome($id: Int) {
 	characters(page: $id) {
 		info {
 			pages
+			count
 		}
 		results {
 			id
