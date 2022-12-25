@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@heroicons/react": "^2.0.13",
     "next": "^12.3.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -35,7 +36,7 @@
   "version": "1.0.0",
   "main": ".eslintrc.js",
   "scripts": {
-    "dev": "next dev",
+    "dev": "NODE_OPTIONS='--inspect' next  dev",
     "lint": "next lint",
     "lint:fix": "eslint --fix",
     "build": "next build",

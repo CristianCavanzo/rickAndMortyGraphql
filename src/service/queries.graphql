@@ -29,9 +29,6 @@ fragment characterComplete on Character {
 	...character
 	episode {
 		...episode
-		characters {
-			...character
-		}
 	}
 	origin {
 		...location
@@ -41,25 +38,40 @@ fragment characterComplete on Character {
 	}
 }
 
-query GetAllCharacters {
-	characters {
+query GetAllCharacters($id: Int) {
+	characters(page: $id) {
+		info {
+			pages
+		}
 		results {
 			...characterComplete
 		}
 	}
 }
 
+query GetAllCharactersHome($id: Int) {
+	characters(page: $id) {
+		info {
+			pages
+		}
+		results {
+			id
+			name
+			image
+		}
+	}
+}
+
+query GetAllPages {
+	characters {
+		info {
+			pages
+		}
+	}
+}
+
 query GetOneCharacter($id: ID!) {
 	character(id: $id) {
-		...character
-        episode {
-            ...episode
-        }
-        origin {
-            ...location
-        }
-        location {
-            ...location
-        }
+		...characterComplete
 	}
 }

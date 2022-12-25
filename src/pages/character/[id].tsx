@@ -1,7 +1,8 @@
 import React from 'react';
 import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
 import { client } from 'src/service/client';
-import { GetAllCharactersDocument, GetOneCharacterDocument } from 'src/service/graphql';
+import { Character, GetAllCharactersDocument, GetOneCharacterDocument } from 'src/service/graphql';
+import Image from 'next/image';
 
 export const getStaticPaths: GetStaticPaths = async () => {
 	let paths = [];
@@ -15,11 +16,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	}
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps<{ character: Character }> = async ({ params }) => {
 	try {
-		const {
-			data: { character },
-		} = await client.query({ query: GetOneCharacterDocument, variables: { id: params.id } });
+		const { data } = await client.query({
+			query: GetOneCharacterDocument,
+			variables: { id: params.id },
+		});
+		const character = data.character as Character;
 		return { props: { character } };
 	} catch (error) {
 		return { notFound: true };
@@ -27,8 +30,17 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 const Character = ({ character }: InferGetStaticPropsType<typeof getStaticProps>) => {
-	console.log(character);
-	return <div>{/* h3+Image/ */}</div>;
+	return (
+		<div className="p-6">
+			<h3 className="text-4xl font-bold">{character.name}</h3>
+			<Image
+				src={character.image}
+				width={300}
+				height={300}
+				alt={`Image of the character ${character.name}`}
+			/>
+		</div>
+	);
 };
 
 export default Character;

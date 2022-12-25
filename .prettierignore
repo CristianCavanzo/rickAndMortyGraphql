@@ -1,2 +1,3 @@
-src/service/**
+src/service/*.ts
+src/service/*.tsx
 **/node_modules
