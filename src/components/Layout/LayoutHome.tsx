@@ -16,6 +16,8 @@ const LayoutHome = ({
 	const stay = Number(router.query.id as string) || 1;
 	const lastPage: number = stay - 1;
 	const next = stay + 1;
+	const nextCount = stay * 20;
+	const canNext = !(nextCount > totalCharacters);
 	return (
 		<div>
 			<div className="mx-auto flex w-full max-w-5xl flex-wrap justify-center gap-6">
@@ -47,9 +49,11 @@ const LayoutHome = ({
 				<div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
 					<div>
 						<p className="text-gray-700 text-sm">
-							Showing <span className="font-medium">{stay}</span> to{' '}
-							<span className="font-medium">{stay * 20}</span> of{' '}
-							<span className="font-medium">{totalCharacters}</span> results
+							Showing <span className="font-medium">{nextCount - 20 || 1}</span> to{' '}
+							<span className="font-medium">
+								{nextCount > totalCharacters ? totalCharacters : nextCount}{' '}
+							</span>{' '}
+							of <span className="font-medium">{totalCharacters}</span> results
 						</p>
 					</div>
 					<div>
@@ -110,7 +114,17 @@ const LayoutHome = ({
 							>
 								10
 							</a> */}
-							<Link href={`/${next}`}>
+							{(canNext && (
+								<Link href={`/${next}`}>
+									<div
+										className="
+								border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex cursor-pointer items-center rounded-r-md border bg-white px-2 py-2 text-sm font-medium focus:z-20"
+									>
+										<span className="sr-only">Next</span>
+										<ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+									</div>
+								</Link>
+							)) || (
 								<div
 									className="
 								border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex cursor-pointer items-center rounded-r-md border bg-white px-2 py-2 text-sm font-medium focus:z-20"
@@ -118,7 +132,7 @@ const LayoutHome = ({
 									<span className="sr-only">Next</span>
 									<ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
 								</div>
-							</Link>
+							)}
 						</nav>
 					</div>
 				</div>

@@ -2,22 +2,10 @@ import React from 'react';
 import { client } from 'src/service/client';
 import { Character, GetAllCharactersHomeDocument } from 'src/service/graphql';
 import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
-import { CharactersComponent } from '@components/Characters';
 import { LayoutHome } from '@components/Layout/LayoutHome';
 export const getStaticPaths: GetStaticPaths = async () => {
 	try {
-		const { data } = await client.query({
-			query: GetAllCharactersHomeDocument,
-		});
-		const numberOfPages = data.characters.info.pages;
-		const paths = [];
-		for (let i = 1; i < numberOfPages; i++) {
-			paths.push({
-				params: {
-					id: String(i),
-				},
-			});
-		}
+		const paths = [{ params: { id: '1' } }];
 		return { paths, fallback: 'blocking' };
 	} catch (error) {
 		return { paths: [], fallback: 'blocking' };
@@ -49,7 +37,7 @@ export const getStaticProps: GetStaticProps<{
 			},
 		};
 	} catch (error) {
-		return { notFound: true };
+		return { notFound: true, revalidate: 60 };
 	}
 };
 
