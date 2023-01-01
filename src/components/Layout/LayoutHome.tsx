@@ -2,8 +2,8 @@ import { CharactersComponent } from '@components/Characters';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Character } from 'src/service/graphql';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
+import { Arrow } from '@components/Icons/Arrow';
 
 const LayoutHome = ({
 	characters,
@@ -61,20 +61,7 @@ const LayoutHome = ({
 							className="isolate inline-flex -space-x-px rounded-md shadow-sm"
 							aria-label="Pagination"
 						>
-							{(lastPage !== 0 && (
-								<Link href={`/${lastPage}`}>
-									<div className="border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex cursor-pointer items-center rounded-l-md border bg-white px-2 py-2 text-sm font-medium focus:z-20">
-										<span className="sr-only">Previous</span>
-										<ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
-									</div>
-								</Link>
-							)) || (
-								<div className="border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex  items-center rounded-l-md border bg-white px-2 py-2 text-sm font-medium opacity-20 focus:z-20">
-									<span className="sr-only">Previous</span>
-									<ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
-								</div>
-							)}
-							{}
+							<Arrow disabled={lastPage === 0} link={`${lastPage}`} direction="left" />
 							{/* <a
 								href="/"
 								aria-current="page"
@@ -115,25 +102,8 @@ const LayoutHome = ({
 							>
 								10
 							</a> */}
-							{(canNext && (
-								<Link href={`/${next}`}>
-									<div
-										className="
-								border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex cursor-pointer items-center rounded-r-md border bg-white px-2 py-2 text-sm font-medium focus:z-20"
-									>
-										<span className="sr-only">Next</span>
-										<ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
-									</div>
-								</Link>
-							)) || (
-								<div
-									className="
-								border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex cursor-pointer items-center rounded-r-md border bg-white px-2 py-2 text-sm font-medium focus:z-20"
-								>
-									<span className="sr-only">Next</span>
-									<ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
-								</div>
-							)}
+
+							<Arrow disabled={!canNext} link={`${next}`} direction="rigth" />
 						</nav>
 					</div>
 				</div>
