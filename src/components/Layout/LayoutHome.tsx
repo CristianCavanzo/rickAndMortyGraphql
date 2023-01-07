@@ -4,6 +4,8 @@ import React from 'react';
 import { Character } from 'src/service/graphql';
 import Link from 'next/link';
 import { Arrow } from '@components/Icons/Arrow';
+import { NumberPage } from '@components/Pagination/NumberPage';
+import { Pagination } from '@components/Pagination';
 
 const LayoutHome = ({
 	characters,
@@ -62,19 +64,9 @@ const LayoutHome = ({
 							aria-label="Pagination"
 						>
 							<Arrow disabled={lastPage === 0} link={`${lastPage}`} direction="left" />
-							{/* <a
-								href="/"
-								aria-current="page"
-								className="border-indigo-500 bg-indigo-50 text-indigo-600 relative z-10 inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20"
-							>
-								1
-							</a>
-							<a
-								href="/"
-								className="border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center border bg-white px-4 py-2 text-sm font-medium focus:z-20"
-							>
-								2
-							</a>
+							<Pagination limit={Math.ceil(totalCharacters / 20)} />
+							{/* 
+							
 							<a
 								href="/"
 								className="border-gray-300 text-gray-500 hover:bg-gray-50 relative hidden items-center border bg-white px-4 py-2 text-sm font-medium focus:z-20 md:inline-flex"
